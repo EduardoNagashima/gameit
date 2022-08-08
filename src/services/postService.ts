@@ -15,23 +15,17 @@ async function create(post: postData) {
 }
 
 async function like(like: likeData) {
+    // QUANDO CLICAR NO LIKE DAR LIKE NA POSTAGEM
+    // QUANDO CLICAR NO LIKE NOVAMENTE ELE TIRA ESSE LIKE
+    // SE CLICAR NO DESLIKE ELE DA DESLIKE NA POSTAGEM
+    // SE CLICAR NO DESLIKE NOVAMENTE ELE TIRA O DESLIKE
+    // CASO JÁ TENHA UM DESLIKE/LIKE ELE COLOCA O INVERSO 
+
     const user = await userRepository.findById(like.userId);
     if (!user) throw { type: 'NOT_FOUND', message: 'User not found' };
     const post = await postRepository.findById(like.postId);
     if (!post) throw { type: 'NOT_FOUND', message: 'Post not found' };
-    const userAlreadyLike = await likeRepository.findByUser(like);
-    if (userAlreadyLike[0]?.value === like.value) throw { type: 'CONFLICT', message: 'User already like this post' };
-
-
-    if (like.value === true) {
-        await likeRepository.newlike(like, userAlreadyLike[0]?.id);
-        await postRepository.addLike(post);
-    };
-
-    if (like.value === false) {
-        await likeRepository.newlike(like, userAlreadyLike[0]?.id);
-        await postRepository.deslike(post);
-    };
+    await likeRepository.newlike(like, post);
 }
 
 const postService = {
