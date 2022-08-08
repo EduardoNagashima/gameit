@@ -1,11 +1,15 @@
 import prisma from "../config/database.js";
 import { userData } from "../services/userService.js";
 
-export async function signInRepository(userInfos: userData) {
-    await prisma.user.create({ data: userInfos })
+async function create(user: userData) {
+    await prisma.user.create({ data: user });
 }
 
-export async function findByEmail(email: string) {
-    const result = await prisma.user.findUnique({ where: { email } });
-    return result;
+async function findByEmail(email: string) {
+    return await prisma.user.findUnique({ where: { email } });
+}
+
+export const userRepository = {
+    create,
+    findByEmail
 }

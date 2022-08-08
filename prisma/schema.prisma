@@ -11,18 +11,28 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
   password String
-  createAt DateTime @default(now())
+  createAt DateTime  @default(now())
   image    String?
   Post     Post[]
+  Session  Session[]
 
   @@map("users")
 }
 
+model Session {
+  id       Int      @id @default(autoincrement())
+  createAt DateTime @default(now())
+  token    String
+  user     User     @relation(fields: [userId], references: [id])
+  userId   Int
+}
+
 model Category {
   id   Int    @id @default(autoincrement())
+  name String
   Post Post[]
 
   @@map("categories")
@@ -33,6 +43,7 @@ model Post {
   tittle     String
   likes      Int      @default(0)
   content    String
+  coverImg   String   @default("https://5287aa00874a313e299d-1850966fc307ff23e1e789aeafd2476b.ssl.cf5.rackcdn.com/PostImagem/42240/foto-branca-download-wallpapers-e-onde-usar_o1fcm9aiph1mte1km1f11cs53mng.png")
   createAt   DateTime @default(now())
   categoryId Int
   userId     Int

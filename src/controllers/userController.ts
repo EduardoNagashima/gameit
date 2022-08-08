@@ -1,14 +1,21 @@
 import { Request, Response } from "express";
-import { signInService, signUpService, userData } from "../services/userService.js";
+import { userService } from "../services/userService.js";
+import { signUpSchema, signInSchema } from "../utils/schemas.js";
 
 export async function signUp(req: Request, res: Response) {
-    const userInfo: userData = req.body;
-    await signUpService(userInfo);
+    const user = req.body;
+    const { error } = signUpSchema.validate(user);
+    if (error) throw { type: 'BAD_REQUEST', message: error.details };
+    delete user.confirmPassword;
+    await userService.signUp(user);
+
     res.sendStatus(201);
 }
 
 export async function signIn(req: Request, res: Response) {
-    const userInfo: userData = req.body;
-    const token = await signInService(userInfo);
+    const user = req.body;
+    const { error } = signInSchema.validate(user);
+    if (error) throw { type: 'BAD_REQUEST', message: error.details };
+    const token = await userService.signIn(user);
     res.status(200).send(token);
 }
