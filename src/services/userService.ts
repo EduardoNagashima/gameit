@@ -16,7 +16,7 @@ export async function signUpService(userInfos: userData) {
 
 export async function signInService(userInfos: userData) {
     const user = await findByEmail(userInfos.email);
-    const validPassword = bcrypt.compareSync(userInfos.password, user!.password)
+    const validPassword = bcrypt.compareSync(userInfos.password, user.password)
     if (!validPassword || !user) throw { type: 'UNAUTHORIZED', message: 'Email ou senha invalidos' };
     try {
         const token = jwt.sign({ email: userInfos.email }, process.env.JWT_SECRET, {

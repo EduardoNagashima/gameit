@@ -16,6 +16,59 @@ model User {
   password String
   createAt DateTime @default(now())
   image    String?
+  Post     Post[]
 
   @@map("users")
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  Post Post[]
+
+  @@map("categories")
+}
+
+model Post {
+  id         Int      @id @default(autoincrement())
+  tittle     String
+  likes      Int      @default(0)
+  content    String
+  createAt   DateTime @default(now())
+  categoryId Int
+  userId     Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+  Report     Report[]
+  Answer     Answer[]
+
+  @@map("posts")
+}
+
+model Answer {
+  id           Int            @id @default(autoincrement())
+  content      String
+  creatAt      DateTime       @default(now())
+  postId       Int
+  post         Post           @relation(fields: [postId], references: [id])
+  ReportAnswer ReportAnswer[]
+
+  @@map("answer")
+}
+
+model Report {
+  id     Int  @id @default(autoincrement())
+  count  Int  @default(0)
+  post   Post @relation(fields: [postId], references: [id])
+  postId Int
+
+  @@map("reports")
+}
+
+model ReportAnswer {
+  id       Int    @id @default(autoincrement())
+  count    Int    @default(0)
+  answer   Answer @relation(fields: [answerId], references: [id])
+  answerId Int
+
+  @@map("reports_answers")
 }
