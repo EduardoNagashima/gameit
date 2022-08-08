@@ -18,6 +18,7 @@ model User {
   image    String?
   Post     Post[]
   Session  Session[]
+  Like     Like[]
 
   @@map("users")
 }
@@ -53,6 +54,7 @@ model Post {
   user       User     @relation(fields: [userId], references: [id])
   Report     Report[]
   Answer     Answer[]
+  Like       Like[]
 
   @@map("posts")
 }
@@ -84,4 +86,15 @@ model ReportAnswer {
   answerId Int
 
   @@map("reports_answers")
+}
+
+model Like {
+  id     Int     @id @default(autoincrement())
+  value  Boolean
+  user   User    @relation(fields: [userId], references: [id])
+  userId Int
+  post   Post    @relation(fields: [postId], references: [id])
+  postId Int
+
+  @@map("likes")
 }

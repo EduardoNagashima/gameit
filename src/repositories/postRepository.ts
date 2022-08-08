@@ -1,3 +1,4 @@
+import { Post } from "@prisma/client";
 import prisma from "../config/database.js";
 import { postData } from "../services/postService.js";
 
@@ -20,12 +21,40 @@ async function getPostsByLikes() {
             likes: 'desc'
         }
     })
+    return posts;
+}
+
+async function findById(id: number) {
+    return await prisma.post.findUnique({ where: { id } })
+}
+
+async function addLike(post: Post) {
+    await prisma.post.update({
+        where: {
+            id: post.id
+        }, data: {
+            likes: (post.likes + 1)
+        }
+    })
+}
+
+async function deslike(post: Post) {
+    await prisma.post.update({
+        where: {
+            id: post.id
+        }, data: {
+            likes: (post.likes - 1)
+        }
+    })
 }
 
 const postRepository = {
     create,
     getPostsByDate,
-    getPostsByLikes
+    getPostsByLikes,
+    findById,
+    addLike,
+    deslike
 }
 
 export default postRepository;
