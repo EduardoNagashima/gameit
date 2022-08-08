@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from "express";
 
 export default function errorHandler(error, req: Request, res: Response, next: NextFunction) {
     let statusCode = 500;
+    if (error == 'JsonWebTokenError: invalid signature') {
+        return res.status(401).send('Erro, token inválido.');
+    }
     if (error.type) {
         if (error.type === 'BAD_REQUEST') statusCode = 400;
         if (error.type === 'NOT_FOUND') statusCode = 404;

@@ -2,16 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
 import tokenRepository from "../repositories/tokenRepository.js";
-import { userData } from "../services/userService.js";
-import { signUpSchema } from "../utils/schemas.js";
+import { postSchema } from "../utils/schemas.js";
 dotenv.config();
-
-export function signUpValidation(req: Request, res: Response, next: NextFunction) {
-    const userInfo: userData = req.body;
-    const { error } = signUpSchema.validate(userInfo);
-    if (error) throw { type: 'BAD_REQUEST', message: error.details }
-    next();
-}
 
 export async function tokenValidation(req: Request, res: Response, next: NextFunction) {
     const { authorization } = req.headers;
@@ -24,6 +16,10 @@ export async function tokenValidation(req: Request, res: Response, next: NextFun
     next();
 }
 
-export function postValidation(req: Request, res: Response) {
-
+export function postValidation(req: Request, res: Response, next: NextFunction) {
+    const post = req.body;
+    const { error } = postSchema.validate(post);
+    if (error) throw { type: 'BAD_REQUEST', message: error.details };
+    res.locals.post = post;
+    next();
 }

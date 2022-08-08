@@ -12,3 +12,11 @@ export const signInSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().required()
 });
+
+export const postSchema = Joi.object({
+    tittle: Joi.string().required(),
+    content: Joi.string().required(),
+    categoryId: Joi.number().integer().required(),
+    userId: Joi.number().integer().required(),
+    coverImg: Joi.string().regex(/(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif|png|svg))/)
+});
