@@ -15,22 +15,28 @@ async function create(post: postData) {
 }
 
 async function like(like: likeData) {
-    // QUANDO CLICAR NO LIKE DAR LIKE NA POSTAGEM
-    // QUANDO CLICAR NO LIKE NOVAMENTE ELE TIRA ESSE LIKE
-    // SE CLICAR NO DESLIKE ELE DA DESLIKE NA POSTAGEM
-    // SE CLICAR NO DESLIKE NOVAMENTE ELE TIRA O DESLIKE
-    // CASO JÁ TENHA UM DESLIKE/LIKE ELE COLOCA O INVERSO 
+    const userPost = await findPostAndUser(like.userId, like.postId);
+    await likeRepository.newlike(like, userPost.post);
+}
 
-    const user = await userRepository.findById(like.userId);
-    if (!user) throw { type: 'NOT_FOUND', message: 'User not found' };
-    const post = await postRepository.findById(like.postId);
+async function deletePost(id: number, userId: number) {
+    const userPost = await findPostAndUser(id, userId);
+    if (userPost.post.userId !== userId) throw { type: 'UNAUTHORIZED', message: 'User cannot delete this post' };
+    await postRepository.deletePost(id);
+}
+
+async function findPostAndUser(postId: number, userId: number) {
+    const post = await postRepository.findById(postId);
     if (!post) throw { type: 'NOT_FOUND', message: 'Post not found' };
-    await likeRepository.newlike(like, post);
+    const user = await userRepository.findById(userId);
+    if (!user) throw { type: 'NOT_FOUND', message: 'User not found' };
+    return { post, user };
 }
 
 const postService = {
     create,
-    like
+    like,
+    deletePost
 }
 
 export default postService;

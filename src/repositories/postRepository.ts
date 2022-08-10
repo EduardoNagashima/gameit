@@ -1,4 +1,5 @@
 import { Post } from "@prisma/client";
+import { number } from "joi";
 import prisma from "../config/database.js";
 import { postData } from "../services/postService.js";
 
@@ -48,13 +49,18 @@ async function deslike(post: Post) {
     })
 }
 
+async function deletePost(id: number) {
+    await prisma.post.delete({ where: { id } });
+}
+
 const postRepository = {
     create,
     getPostsByDate,
     getPostsByLikes,
     findById,
     addLike,
-    deslike
+    deslike,
+    deletePost
 }
 
 export default postRepository;

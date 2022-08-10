@@ -9,17 +9,19 @@ export async function tokenValidation(req: Request, res: Response, next: NextFun
     const { authorization } = req.headers;
     const token = authorization?.replace("Bearer ", "");
     if (!authorization) throw { type: "BAD_REQUEST", message: 'invalid token' };
-    const userId = jwt.verify(token, process.env.JWT_SECRET);
+    const { userId } = jwt.verify(token, process.env.JWT_SECRET);
     const dbToken = await tokenRepository.findByToken(token);
     if (!dbToken) throw { type: "BAD_REQUEST", message: 'invalid token' };
-    res.locals = userId;
+    res.locals.userId = userId;
     next();
 }
 
 export function postValidation(req: Request, res: Response, next: NextFunction) {
-    const post = req.body;
+    let post = req.body;
+    const userId = res.locals.userId;
     const { error } = postSchema.validate(post);
     if (error) throw { type: 'BAD_REQUEST', message: error.details };
+    post = { ...post, userId }
     res.locals.post = post;
     next();
 }
