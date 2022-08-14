@@ -8,6 +8,11 @@ export async function post(req: Request, res: Response) {
     res.sendStatus(201);
 }
 
+export async function getPosts(req: Request, res: Response) {
+    const posts = await postService.get();
+    res.send(posts);
+}
+
 export async function like(req: Request, res: Response) {
     const like = req.body;
     const { userId } = res.locals;

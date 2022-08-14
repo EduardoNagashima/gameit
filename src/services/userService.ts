@@ -12,6 +12,8 @@ export type userData = Omit<User, "id">
 export async function signUp(user: userData) {
     const userAlreadyExists = await userRepository.findByEmail(user.email);
     if (userAlreadyExists) throw { type: 'CONFLICT', message: 'Email já está sendo utilizado.' }
+    const usernameExist = await userRepository.findByUsername(user.username);
+    if (usernameExist) throw { type: 'CONFLICT', message: 'Username já está sendo utilizado.' }
     user.password = bcrypt.hashSync(user.password, 10);
     await userRepository.create(user);
 }

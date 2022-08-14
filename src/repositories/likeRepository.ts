@@ -16,25 +16,7 @@ async function findByUser(like: likeData) {
 }
 
 async function newlike(like: likeData, post: Post) {
-    const userAlreadyLike = await likeRepository.findByUser(like);
-    console.log(userAlreadyLike)
-    if (userAlreadyLike) {
-        await likeRepository.deleteLike(userAlreadyLike.id)
-        if (userAlreadyLike.value) {
-            await postRepository.deslike(post);
-        } else {
-            await postRepository.addLike(post);
-        }
-    } else {
-        await prisma.like.create({
-            data: like
-        });
-        if (like.value === true) {
-            await postRepository.addLike(post);
-        } else {
-            await postRepository.deslike(post);
-        }
-    }
+
 }
 
 async function deleteLike(id: number) {

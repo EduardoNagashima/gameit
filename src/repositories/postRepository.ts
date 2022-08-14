@@ -1,5 +1,4 @@
 import { Post } from "@prisma/client";
-import { number } from "joi";
 import prisma from "../config/database.js";
 import { postData } from "../services/postService.js";
 
@@ -9,6 +8,7 @@ async function create(post: postData) {
 
 async function getPostsByDate() {
     const posts = await prisma.post.findMany({
+        include: { user: { select: { image: true, username: true } } },
         orderBy: {
             createAt: 'asc',
         },

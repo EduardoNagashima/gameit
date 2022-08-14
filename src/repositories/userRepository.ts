@@ -13,8 +13,13 @@ async function findById(id: number) {
     return await prisma.user.findUnique({ where: { id } })
 }
 
+async function findByUsername(username: string) {
+    return await prisma.user.findUnique({ where: { username } });
+}
+
 export const userRepository = {
     create,
     findByEmail,
-    findById
+    findById,
+    findByUsername
 }

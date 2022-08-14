@@ -25,6 +25,10 @@ async function deletePost(id: number, userId: number) {
     await postRepository.deletePost(id);
 }
 
+async function get() {
+    return await postRepository.getPostsByDate();
+}
+
 async function findPostAndUser(postId: number, userId: number) {
     const post = await postRepository.findById(postId);
     if (!post) throw { type: 'NOT_FOUND', message: 'Post not found' };
@@ -35,6 +39,7 @@ async function findPostAndUser(postId: number, userId: number) {
 
 const postService = {
     create,
+    get,
     like,
     deletePost
 }

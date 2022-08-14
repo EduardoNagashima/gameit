@@ -12,10 +12,11 @@ datasource db {
 
 model User {
   id       Int       @id @default(autoincrement())
+  username String    @unique
   email    String    @unique
   password String
   createAt DateTime  @default(now())
-  image    String?
+  image    String?   @default("https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjkzNy1hZXctMTExXzMuanBn.jpg")
   Post     Post[]
   Session  Session[]
   Like     Like[]
@@ -46,54 +47,22 @@ model Post {
   tittle     String
   likes      Int      @default(0)
   content    String
-  coverImg   String   @default("https://5287aa00874a313e299d-1850966fc307ff23e1e789aeafd2476b.ssl.cf5.rackcdn.com/PostImagem/42240/foto-branca-download-wallpapers-e-onde-usar_o1fcm9aiph1mte1km1f11cs53mng.png")
+  coverImg   String   @default("https://t3.ftcdn.net/jpg/03/23/88/08/360_F_323880864_TPsH5ropjEBo1ViILJmcFHJqsBzorxUB.jpg")
   createAt   DateTime @default(now())
   categoryId Int
-  userId     Int
   category   Category @relation(fields: [categoryId], references: [id])
+  userId     Int
   user       User     @relation(fields: [userId], references: [id])
-  Report     Report[]
-  Answer     Answer[]
   Like       Like[]
 
   @@map("posts")
 }
 
-model Answer {
-  id           Int            @id @default(autoincrement())
-  content      String
-  creatAt      DateTime       @default(now())
-  postId       Int
-  post         Post           @relation(fields: [postId], references: [id])
-  ReportAnswer ReportAnswer[]
-
-  @@map("answer")
-}
-
-model Report {
-  id     Int  @id @default(autoincrement())
-  count  Int  @default(0)
-  post   Post @relation(fields: [postId], references: [id])
-  postId Int
-
-  @@map("reports")
-}
-
-model ReportAnswer {
-  id       Int    @id @default(autoincrement())
-  count    Int    @default(0)
-  answer   Answer @relation(fields: [answerId], references: [id])
-  answerId Int
-
-  @@map("reports_answers")
-}
-
 model Like {
-  id     Int     @id @default(autoincrement())
-  value  Boolean
-  user   User    @relation(fields: [userId], references: [id])
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
   userId Int
-  post   Post    @relation(fields: [postId], references: [id])
+  post   Post @relation(fields: [postId], references: [id])
   postId Int
 
   @@map("likes")
