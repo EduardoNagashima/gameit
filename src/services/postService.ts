@@ -25,7 +25,11 @@ async function deletePost(id: number, userId: number) {
     await postRepository.deletePost(id);
 }
 
-async function get() {
+async function get(id?: number) {
+    if (id) {
+        await postRepository.addView(id);
+        return await postRepository.findById(id);
+    }
     return await postRepository.getPostsByDate();
 }
 

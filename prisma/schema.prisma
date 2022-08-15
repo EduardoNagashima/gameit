@@ -47,7 +47,8 @@ model Post {
   tittle     String
   likes      Int      @default(0)
   content    String
-  coverImg   String   @default("https://t3.ftcdn.net/jpg/03/23/88/08/360_F_323880864_TPsH5ropjEBo1ViILJmcFHJqsBzorxUB.jpg")
+  coverImg   String
+  views      Int      @default(0)
   createAt   DateTime @default(now())
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id])

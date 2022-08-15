@@ -10,7 +10,7 @@ async function getPostsByDate() {
     const posts = await prisma.post.findMany({
         include: { user: { select: { image: true, username: true } } },
         orderBy: {
-            createAt: 'asc',
+            createAt: 'desc',
         },
     })
     return posts;
@@ -53,7 +53,21 @@ async function deletePost(id: number) {
     await prisma.post.delete({ where: { id } });
 }
 
+async function addView(id: number) {
+    const post = await prisma.post.findUnique({ where: { id } });
+    await prisma.post.update({
+        where: {
+            id
+        },
+        data: {
+
+            views: post.views + 1,
+        },
+    })
+}
+
 const postRepository = {
+    addView,
     create,
     getPostsByDate,
     getPostsByLikes,

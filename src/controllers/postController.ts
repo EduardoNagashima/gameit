@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { read } from "fs";
 import postService from "../services/postService.js";
 
 export async function post(req: Request, res: Response) {
@@ -6,6 +7,12 @@ export async function post(req: Request, res: Response) {
     await postService.create(post);
 
     res.sendStatus(201);
+}
+
+export async function getPost(req: Request, res: Response) {
+    const { id } = req.params;
+    const post = await postService.get(parseInt(id));
+    res.send(post);
 }
 
 export async function getPosts(req: Request, res: Response) {
