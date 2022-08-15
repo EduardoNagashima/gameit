@@ -41,10 +41,15 @@ async function findPostAndUser(postId: number, userId: number) {
     return { post, user };
 }
 
+async function getByViews() {
+    return await postRepository.getByViews();
+}
+
 const postService = {
     create,
     get,
     like,
+    getByViews,
     deletePost
 }
 

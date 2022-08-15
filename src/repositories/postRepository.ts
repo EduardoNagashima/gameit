@@ -26,7 +26,7 @@ async function getPostsByLikes() {
 }
 
 async function findById(id: number) {
-    return await prisma.post.findUnique({ where: { id } })
+    return await prisma.post.findUnique({ where: { id }, include: { user: { select: { image: true, username: true } } } })
 }
 
 async function addLike(post: Post) {
@@ -60,10 +60,13 @@ async function addView(id: number) {
             id
         },
         data: {
-
             views: post.views + 1,
         },
     })
+}
+
+async function getByViews() {
+    return await prisma.post.findMany({ take: 5, orderBy: { views: 'desc' }, include: { user: { select: { image: true, username: true } } } })
 }
 
 const postRepository = {
@@ -74,6 +77,7 @@ const postRepository = {
     findById,
     addLike,
     deslike,
+    getByViews,
     deletePost
 }
 

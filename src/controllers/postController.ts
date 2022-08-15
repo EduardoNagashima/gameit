@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { read } from "fs";
 import postService from "../services/postService.js";
 
 export async function post(req: Request, res: Response) {
@@ -32,4 +31,9 @@ export async function deletePost(req: Request, res: Response) {
     const { userId } = res.locals;
     await postService.deletePost(parseInt(id), Number(userId));
     res.sendStatus(204)
+}
+
+export async function getMostViews(req: Request, res: Response) {
+    const posts = await postService.getByViews();
+    res.send(posts);
 }
