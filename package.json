@@ -9,6 +9,9 @@
     "start": "node dist/src/index.js",
     "dev": "nodemon src/index.ts"
   },
+  "engines": {
+    "node": "16.16.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
