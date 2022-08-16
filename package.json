@@ -5,8 +5,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/src/index.js && npx prisma migrate dev",
+    "build": "npx prisma migrate deploy && tsc",
+    "start": "node dist/src/index.js",
     "dev": "nodemon src/index.ts"
   },
   "keywords": [],
