@@ -20,9 +20,9 @@ export async function getPosts(req: Request, res: Response) {
 }
 
 export async function like(req: Request, res: Response) {
-    const like = req.body;
+    const { postId } = req.body;
     const { userId } = res.locals;
-    await postService.like({ ...like, userId });
+    await postService.like({ postId, userId });
     res.sendStatus(200);
 }
 

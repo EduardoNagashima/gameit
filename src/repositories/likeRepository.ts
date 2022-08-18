@@ -1,6 +1,5 @@
-import { Like, Post } from "@prisma/client";
+import { Like } from "@prisma/client";
 import prisma from "../config/database.js";
-import postRepository from "./postRepository.js";
 
 type likeData = Omit<Like, "id">
 
@@ -15,8 +14,8 @@ async function findByUser(like: likeData) {
     })
 }
 
-async function newlike(like: likeData, post: Post) {
-
+async function newlike(like: likeData) {
+    await prisma.like.createMany({ data: { postId: like.postId, userId: like.userId } })
 }
 
 async function deleteLike(id: number) {
