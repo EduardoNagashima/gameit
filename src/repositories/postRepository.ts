@@ -5,12 +5,24 @@ async function create(post: postData) {
     await prisma.post.create({ data: post });
 }
 
+// async function getPostsByDate() {
+//     const posts = await prisma.post.findMany({
+//         include: {
+//             user: { select: { image: true, username: true, Like: { select: { postId: true } } } }, _count: {
+//                 select: { Like: true }
+//             }
+//         },
+
+//         orderBy: {
+//             createAt: 'desc',
+//         },
+//     })
+//     return posts;
+// }
+
 async function getPostsByDate() {
     const posts = await prisma.post.findMany({
-        include: { user: { select: { image: true, username: true } } },
-        orderBy: {
-            createAt: 'desc',
-        },
+        include: { user: { select: { username: true, image: true } }, Like: { select: { user: { select: { username: true } } } }, _count: { select: { Like: true } } }, orderBy: { createAt: 'desc' }
     })
     return posts;
 }

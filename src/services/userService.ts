@@ -2,8 +2,8 @@ import { User } from "@prisma/client";
 import { userRepository } from "../repositories/userRepository.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
-import dotenv from "dotenv";
 import tokenRepository from "../repositories/tokenRepository.js";
+import dotenv from "dotenv";
 dotenv.config();
 
 

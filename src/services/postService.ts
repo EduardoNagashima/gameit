@@ -14,7 +14,7 @@ async function create(post: postData) {
 }
 
 async function like(like: likeData) {
-    await findPostAndUser(like.userId, like.postId);
+    await findPostAndUser(like.postId, like.userId);
     const alreadyLike = await likeRepository.findByUser(like);
     if (alreadyLike) {
         return likeRepository.deleteLike(alreadyLike.id);
@@ -40,7 +40,6 @@ async function findPostAndUser(postId: number, userId: number) {
     const post = await postRepository.findById(postId);
     if (!post) throw { type: 'NOT_FOUND', message: 'Post not found' };
     const user = await userRepository.findById(userId);
-    console.log(user);
     if (!user) throw { type: 'NOT_FOUND', message: 'User not found' };
     return { post, user };
 }
