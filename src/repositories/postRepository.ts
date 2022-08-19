@@ -32,7 +32,12 @@ async function getPostsByLikes() {
 }
 
 async function findById(id: number) {
-    return await prisma.post.findUnique({ where: { id }, include: { user: { select: { image: true, username: true } } } })
+    // return await prisma.post.findUnique({ where: { id }, include: { user: { select: { image: true, username: true } } } })
+
+    return await prisma.post.findUnique({
+        where: { id },
+        include: { user: { select: { username: true, image: true } }, Like: { select: { user: { select: { username: true } } } }, _count: { select: { Like: true } } },
+    })
 }
 
 async function deletePost(id: number) {
