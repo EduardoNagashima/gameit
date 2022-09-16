@@ -20,8 +20,8 @@ export async function signUp(user: userData) {
 
 export async function signIn(user: userData) {
     const userInfo = await userRepository.findByEmail(user.email);
-    const { image, username } = userInfo;
     if (!userInfo) throw { type: 'NOT_FOUND', message: 'Usuário não encontrado.' };
+    const { image, username } = userInfo;
     const correctPassword = bcrypt.compareSync(user.password, userInfo.password);
     if (!userInfo || !correctPassword) throw { type: 'UNAUTHORIZED', message: 'Senha inválida para este usuário.' };
     const token = jwt.sign({ userId: userInfo.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 * 30 });

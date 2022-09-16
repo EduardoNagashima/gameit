@@ -13,5 +13,5 @@ export default function errorHandler(error, req: Request, res: Response, next: N
         return res.status(statusCode).send(error.message);
     }
 
-    res.status(statusCode).send('Houve algum problema na aplicação, por favor tente novamente.');
+    res.status(statusCode).send(error);
 }
