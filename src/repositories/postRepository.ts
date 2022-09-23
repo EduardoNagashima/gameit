@@ -41,6 +41,7 @@ async function findById(id: number) {
 }
 
 async function deletePost(id: number) {
+    await prisma.like.deleteMany({ where: { postId: id } })
     await prisma.post.delete({ where: { id } });
 }
 

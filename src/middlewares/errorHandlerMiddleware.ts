@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 export default function errorHandler(error, req: Request, res: Response, next: NextFunction) {
     let statusCode = 500;
+    console.log(error);
     if (error == 'JsonWebTokenError: invalid signature') {
         return res.status(401).send('Erro, token inválido.');
     }
