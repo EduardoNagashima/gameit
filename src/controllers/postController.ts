@@ -29,7 +29,7 @@ export async function like(req: Request, res: Response) {
 export async function deletePost(req: Request, res: Response) {
     const { id } = req.params;
     const { userId } = res.locals;
-    await postService.deletePost(parseInt(id), Number(userId));
+    await postService.deletePost(parseInt(id), parseInt(userId));
     res.sendStatus(204)
 }
 
