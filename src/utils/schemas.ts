@@ -15,7 +15,7 @@ export const signInSchema = Joi.object({
 });
 
 export const postSchema = Joi.object({
-    tittle: Joi.string().required(),
+    tittle: Joi.string().max(60).required(),
     content: Joi.string().required(),
     categoryId: Joi.number().integer().required(),
     coverImg: Joi.string().regex(/(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif|png|svg))/).required()
